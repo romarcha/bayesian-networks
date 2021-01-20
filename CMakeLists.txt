@@ -20,4 +20,13 @@ include_directories(
     ${EIGEN3_INCLUDE_DIR}
 )
 
+# Macro to generate library name with prefix
+macro(LIBNAME _origname _newname)
+    set(${_newname} "${LIB_PREFIX}${_origname}")
+endmacro()
+
+# Library Names
+LIBNAME("bn" LIB_BN)
+
+add_subdirectory(src/bn/bn)
 add_subdirectory(src/bn/examples)
