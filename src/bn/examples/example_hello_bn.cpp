@@ -7,6 +7,6 @@
 int main()
 {
     std::cout << "Hello World!" << std::endl;
-    bn::Graph graph;
+    bn::Graph graph(10);
     return 0;
 }

@@ -11,9 +11,9 @@ class Graph
 {
     public:
         Graph();
-
+        Graph(unsigned int n_nodes, bool fully_connected=true);
         void add_node();
-        void add_edge();
+        void add_edge(unsigned int node_i, unsigned int node_j);
     public:
         std::vector<Node> m_nodes;
         std::vector<std::pair<unsigned int, unsigned int> > m_edges;
