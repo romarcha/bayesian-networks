@@ -4,4 +4,4 @@ add_library(
     node.cpp
 )
 
-target_link_libraries(${LIB_BN})
+target_link_libraries(${LIB_BN} ${GRAPHVIZ_GVC_LIBRARY})

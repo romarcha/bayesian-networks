@@ -54,4 +54,9 @@ void Graph::add_edge(unsigned int node_i, unsigned int node_j)
     std::cout<<"New number of edges is "<<m_edges.size()<<"."<<std::endl;
 }
 
+void Graph::draw(std::string path)
+{
+    
+}
+
 }

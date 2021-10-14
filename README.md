@@ -15,6 +15,7 @@ MacOS
 
 ```bash
 brew install cmake
+brew install graphviz
 ```
 
 ## Compilation
