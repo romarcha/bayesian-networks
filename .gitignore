@@ -1,1 +1,7 @@
+.vscode/
 build/
+
+*.png
+*.pdf
+*.dot
+
