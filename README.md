@@ -1,11 +1,11 @@
 # Bayesian Networks
 
-This repository implements several methods for working with Bayesian 
-Networks, including data generation, simulation, parameter inference and 
+This project aims at bring together several methods from the Bayesian 
+Network literature, including data generation, parameter inference and
 structure learning. 
 
-The code is written in C++ and can be compiled using C++ to find the
-dependencies and link the generated code.
+The code is written in C++ and can be compiled using CMake, which
+automatically finds dependencies and links the libraries and executables.
 
 ## Dependencies
 
