@@ -44,8 +44,8 @@ At the moment we need help with the following tasks:
 
 - Check for cycles in the graphs when adding edges (only if acyclic)
 - Check if edge exists before adding a new edge
-- Assign parameters to edges
-- Assign variably types to nodes (categorical, binary or continuous)
+- Add parameters to edges
+- Assign variable types to nodes (categorical, binary or continuous)
 - Evaluate Conditional Independence
 - Generate data from graph
 - Likelihood calculation from data

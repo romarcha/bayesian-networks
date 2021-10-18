@@ -8,7 +8,7 @@ int main()
 {
     std::cout << "Hello Bayesian Network" << std::endl;
 
-    unsigned int n_nodes = 3;
+    unsigned int n_nodes = 5;
     bool directed = true;
     bool acyclic = true;
     bool fully_connected = true;

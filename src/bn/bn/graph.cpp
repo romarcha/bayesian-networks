@@ -25,7 +25,7 @@ Graph::Graph(unsigned int n_nodes, bool directed, bool acyclic, bool fully_conne
         {
             this->add_node(std::to_string(i));
         }
-        
+
         //! Now add all combinations of nodes as pairs in the edges.
         for(unsigned int i=0; i < n_nodes; i++)
         {
@@ -68,21 +68,32 @@ unsigned int Graph::get_number_of_nodes() const
 
 bool Graph::add_edge(unsigned int node_i, unsigned int node_j)
 {
+    Node &parent_node = m_nodes[node_i];
+    Node &child_node = m_nodes[node_j];
+    
+    return add_edge(parent_node,child_node);
+}
+
+bool Graph::add_edge(std::string node_name_i, std::string node_name_j)
+{
+    return false;
+}
+
+bool Graph::add_edge(bn::Node &node_parent, bn::Node &node_child)
+{
     bool success = false;
     if(m_verbose >= VERBOSE_DEBUG)
     {
         std::cout<<"Adding edge."<<std::endl;
     }
-    
     // Check if edge can be added according to the definition of this graph.
-    std::pair<unsigned int, unsigned int> edge = std::make_pair(node_i,node_j);
+    bn::Edge edge(node_parent,node_child);
     m_edges.push_back(edge);
-    success = true;
+    
     if(m_verbose >= VERBOSE_DEBUG)
     {
         std::cout<<"New number of edges is "<<m_edges.size()<<"."<<std::endl;
     }
-
     return success;
 }
 
@@ -127,9 +138,9 @@ std::string Graph::get_dot()
     for(unsigned int j = 0; j < this->get_number_of_edges(); j++)
     {
         dot_code << "";
-        dot_code << m_edges[j].first;
+        dot_code << m_edges[j].m_parent_node->get_name();
         dot_code << "->";
-        dot_code << m_edges[j].second;
+        dot_code << m_edges[j].m_child_node->get_name();
         dot_code << ";\n";
     }
 
