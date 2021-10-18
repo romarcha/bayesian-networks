@@ -7,9 +7,13 @@
 int main()
 {
     std::cout << "Hello Bayesian Network" << std::endl;
-    bool fully_connected = true;
+
     unsigned int n_nodes = 3;
-    bn::Graph graph(n_nodes, fully_connected);
+    bool directed = true;
+    bool acyclic = true;
+    bool fully_connected = true;
+    bn::VerboseLevel verbose_level = bn::VERBOSE_DEBUG;
+    bn::Graph graph(n_nodes, directed, acyclic, fully_connected, verbose_level);
     graph.draw("./","hello_bn");
     return 0;
 }

@@ -34,3 +34,23 @@ make
 
 ## Run Tests
 
+
+## Collaboration
+
+To discuss collaboration contact Roman Marchant roman.marchant@sydney.edu.au.
+At the moment we need help with the following tasks:
+
+### TODO
+
+- Check for cycles in the graphs when adding edges (only if acyclic)
+- Check if edge exists before adding a new edge
+- Assign parameters to edges
+- Assign variably types to nodes (categorical, binary or continuous)
+- Evaluate Conditional Independence
+- Generate data from graph
+- Likelihood calculation from data
+- Parameter estimation
+- Structure learning
+    - Random search
+    - Order MCMC
+    - Partition MCMC

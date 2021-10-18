@@ -22,33 +22,45 @@ enum VerboseLevel
 class Graph
 {
     public:
-        Graph();
+        Graph(unsigned int n_nodes, bool directed=true, bool acyclic = true, bool fully_connected=false, VerboseLevel verbose=VERBOSE_DEBUG);
 
-        Graph(unsigned int n_nodes, bool fully_connected=false, bool directed=true, VerboseLevel verbose=VERBOSE_DEBUG);
-
-        void add_node(std::string node_name);
+        bool add_node(std::string node_name);
 
         unsigned int get_number_of_nodes() const;
 
-        void add_edge(unsigned int node_i, unsigned int node_j);
+        //!    
+        /* Check if edge can be added according to the definition of this graph.
+         The most trivial way is by checking if the introduction of the new edge introduces a cycle
+         is to create a copy of the graph, add the edge to the copied graph and check for cycles
+         Another possibility, to avoid the copy (useful for large graphs) is to add the edge
+         to this graph, and then, if cycles are found remove the edge.
+         This function will report success or failure and will also report error of failure
+         (e.g. which cycles become present) */
+        bool add_edge(unsigned int node_i, unsigned int node_j);
 
         unsigned int get_number_of_edges() const;
 
         bool is_directed() const;
 
-        void set_directed(bool directed);
+        bool is_acyclic() const;
 
         std::string get_dot();
 
         bool draw(std::string output_path, std::string filename);
+
     protected:
         std::vector<Node> m_nodes;
         std::vector<std::pair<unsigned int, unsigned int> > m_edges;
 
         bool m_directed;
 
+        bool m_acyclic;
+
         //! Verbose Level
         VerboseLevel m_verbose;
+
+    private:
+        Graph(){};
 };
 
 }
