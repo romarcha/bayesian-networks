@@ -45,8 +45,9 @@ At the moment we need help with the following tasks:
 - [x] Implement function for parents and children leaf.
 - [x] Implement function for detecting cycles.
 - [x] Implement function that finds topological order.
-- [ ] Check for cycles in the graphs when adding edges (only if acyclic).
+- [x] Check for cycles in the graphs when adding edges (only if acyclic).
 - [ ] Check if edge exists before adding a new edge.
+- [ ] Create graph from csv adjacency matrix
 - [ ] Check when you add a node that there is not existent node with the same name.
 - [ ] Implement functions for reachable nodes and d-separation.
 - [ ] Add parameters to edges.
@@ -59,3 +60,11 @@ At the moment we need help with the following tasks:
     - [ ] Random search
     - [ ] Order MCMC
     - [ ] Partition MCMC
+
+- [ ] Handle errors and output with better practices than cout.
+- [ ] Write tests for:
+    - [ ] Check for cycles
+    - [ ] Parent, Child and Leaf functions
+    - [ ] Add good nodes and good edges.
+    - [ ] Add repeated edges or nodes.
+    - [ ] Test all above for directed and undirected graphs.

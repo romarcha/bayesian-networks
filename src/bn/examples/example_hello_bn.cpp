@@ -33,6 +33,7 @@ int main()
     graph.add_edge("D","H");
     graph.add_edge("H","C");
     graph.add_edge("D","A");
+    graph.add_edge("D","A");
     graph.add_edge("E","D");
     graph.draw("./","hello_bn");
     auto order = graph.topological_order();

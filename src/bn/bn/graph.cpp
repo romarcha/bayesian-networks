@@ -103,11 +103,37 @@ bool Graph::add_edge(bn::Node &node_parent, bn::Node &node_child)
     bool success = false;
     if(m_verbose >= VERBOSE_DEBUG)
     {
-        std::cout<<"Adding edge."<<std::endl;
+        if(get_directed())
+        {
+            std::cout<<"Adding edge "<<node_parent.get_name()<<" -> "<<node_child.get_name()<<std::endl;
+        }
+        else
+        {
+            std::cout<<"Adding edge "<<node_parent.get_name()<<" - "<<node_child.get_name()<<std::endl;
+        }
     }
-    // Check if edge can be added according to the definition of this graph.
+
+    //First check if the edge already exists
+    for(unsigned int edge_idx = 0; edge_idx < get_number_of_edges(); edge_idx++)
+    {
+        if(m_edges[edge_idx].m_parent_node == &node_parent && m_edges[edge_idx].m_child_node == &node_child)
+        {
+            std::cout<<"Error: edge between "<<node_parent.get_name()<<" and "<<node_child.get_name()<<" already exists."<<std::endl;
+            return false;
+        }
+    }
+
     bn::Edge edge(node_parent,node_child);
     m_edges.push_back(edge);
+    success = true;
+
+    //! If this graph is supposed to be acyclic, but the introduction of this edge made it non acyclic.
+    if(get_acyclic() && !is_acyclic())
+    {
+        std::cout<<"Error: cannot introduce the edge between "<<node_parent.get_name()<<" and "<<node_child.get_name()<<std::endl;
+        m_edges.pop_back();
+        success = false;
+    }
     
     if(m_verbose >= VERBOSE_DEBUG)
     {
@@ -319,7 +345,15 @@ std::string Graph::get_dot()
     {
         dot_code << "";
         dot_code << m_edges[j].m_parent_node->get_name();
-        dot_code << "->";
+        if(get_directed())
+        {
+            dot_code << "->";
+        }
+        else
+        {
+            dot_code << "-";
+        }
+        
         dot_code << m_edges[j].m_child_node->get_name();
         dot_code << ";\n";
     }
