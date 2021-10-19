@@ -4,6 +4,8 @@
 #include <fstream>
 #include <graphviz/gvc.h>
 #include <graphviz/cgraph.h>
+#include <algorithm>
+#include <queue>
 
 namespace bn
 {
@@ -66,6 +68,20 @@ unsigned int Graph::get_number_of_nodes() const
     return m_nodes.size();
 }
 
+int Graph::get_index(Node* node_ptr)
+{
+    int index = -1;
+    for(unsigned int node_idx = 0; node_idx < get_number_of_nodes(); node_idx++)
+    {
+        if(&(m_nodes[node_idx]) == node_ptr)
+        {
+            index = node_idx;
+            break;
+        }
+    }
+    return index;
+}
+
 bool Graph::add_edge(unsigned int node_i, unsigned int node_j)
 {
     Node &parent_node = m_nodes[node_i];
@@ -76,9 +92,10 @@ bool Graph::add_edge(unsigned int node_i, unsigned int node_j)
 
 bool Graph::add_edge(std::string node_name_i, std::string node_name_j)
 {
+    Node *node_i = get_node(node_name_i);
+    Node *node_j = get_node(node_name_j);
 
-
-    return false;
+    return add_edge(*node_i, *node_j);
 }
 
 bool Graph::add_edge(bn::Node &node_parent, bn::Node &node_child)
@@ -104,14 +121,22 @@ unsigned int Graph::get_number_of_edges() const
     return m_edges.size();
 }
 
-bool Graph::is_directed() const
+bool Graph::get_directed() const
 {
     return m_directed;
 }
 
-bool Graph::is_acyclic() const
+bool Graph::get_acyclic() const
 {
     return m_acyclic;
+}
+
+bool Graph::is_acyclic()
+{
+    bool is_acyclic = false;
+    if (topological_order().size() > 0)
+        is_acyclic = true;
+    return is_acyclic;
 }
 
 Node* Graph::get_node(std::string name)
@@ -137,7 +162,7 @@ std::vector<Node*> Graph::get_parents(bn::Node &node_of_interest)
 {
     if(m_verbose >= VERBOSE_DEBUG)
     {
-        std::cout<<"Getting parents of "<<node_of_interest.get_name()<<":"<<std::endl;
+//        std::cout<<"Getting parents of "<<node_of_interest.get_name()<<":"<<std::endl;
     }
     std::vector<Node*> parents;
     for(unsigned int edge_idx = 0; edge_idx < get_number_of_edges(); edge_idx++)
@@ -147,13 +172,13 @@ std::vector<Node*> Graph::get_parents(bn::Node &node_of_interest)
             parents.push_back(m_edges[edge_idx].m_parent_node);
             if(m_verbose >= VERBOSE_DEBUG)
             {
-                std::cout<<m_edges[edge_idx].m_parent_node->get_name()<<std::endl;
+//                std::cout<<m_edges[edge_idx].m_parent_node->get_name()<<std::endl;
             }
         }
     }
     if(m_verbose >= VERBOSE_DEBUG)
     {
-        std::cout<<"--------------"<<std::endl;
+//        std::cout<<"--------------"<<std::endl;
     }
     return parents;
 }
@@ -167,7 +192,7 @@ std::vector<Node*> Graph::get_children(bn::Node &node_of_interest)
 {
     if(m_verbose >= VERBOSE_DEBUG)
     {
-        std::cout<<"Getting children of "<<node_of_interest.get_name()<<":"<<std::endl;
+        //std::cout<<"Getting children of "<<node_of_interest.get_name()<<":"<<std::endl;
     }
     std::vector<Node*> children;
     for(unsigned int edge_idx = 0; edge_idx < get_number_of_edges(); edge_idx++)
@@ -177,15 +202,94 @@ std::vector<Node*> Graph::get_children(bn::Node &node_of_interest)
             children.push_back(m_edges[edge_idx].m_child_node);
             if(m_verbose >= VERBOSE_DEBUG)
             {
-                std::cout<<m_edges[edge_idx].m_child_node->get_name()<<std::endl;
+                //std::cout<<m_edges[edge_idx].m_child_node->get_name()<<std::endl;
             }
         }
     }
     if(m_verbose >= VERBOSE_DEBUG)
     {
-        std::cout<<"--------------"<<std::endl;
+        //std::cout<<"--------------"<<std::endl;
     }
     return children;
+}
+
+std::vector<Node*> Graph::get_leaf_nodes()
+{
+    std::vector<Node*> leafs;
+    for(unsigned int node_idx = 0; node_idx < get_number_of_nodes(); node_idx++)
+    {
+        if(get_children(m_nodes[node_idx]).size() == 0)
+        {
+            leafs.push_back(&m_nodes[node_idx]);
+        }
+    }
+    return leafs;
+}
+
+std::vector<int> Graph::indegree()
+{
+    std::vector<int> indegrees;
+    for(unsigned int node_idx = 0; node_idx < get_number_of_nodes(); node_idx++)
+    {
+        indegrees.push_back(get_parents(m_nodes[node_idx]).size());
+    }
+    return indegrees;
+}
+
+std::vector<Node*> Graph::topological_order()
+{
+    std::cout << "Topological Order" <<std::endl;
+    //! Create a copy of the graph, to continuously remove nodes
+    //! **Used a different algorithms which doesn't need the copy of the graph.
+    // Graph aux_graph = *this;
+
+    //! The indegree of each node in the array. Each element in the indegree 
+    std::vector<int> indegree = this->indegree();
+
+    std::vector<Node*> topological_ordering;
+
+    // A que is used to store the nodes that go into the topological ordering
+    std::queue<Node*> queue;
+
+    for(unsigned int node_idx = 0; node_idx < get_number_of_nodes(); node_idx++)
+    {
+        if(indegree[node_idx] == 0)
+        {
+            queue.push(&m_nodes[node_idx]);
+        }
+    }
+
+    while(queue.size()>0)
+    {
+
+        Node* node_ptr = queue.front();
+        topological_ordering.push_back(node_ptr);
+        std::cout << "Added to ordering: "<<node_ptr->get_name() <<std::endl;
+        queue.pop();
+
+        // Descrease the degreee of all affected nodes (children of the queued)
+        auto children = get_children(*node_ptr);
+        for(Node* child : children)
+        {
+            int index = get_index(child);
+            if (index >= 0)
+            {
+                indegree[index]--;
+                if(indegree[index] == 0)
+                {
+                    queue.push(child);
+                }
+            }
+        }
+    }
+
+    if(topological_ordering.size() != get_number_of_nodes())
+    {
+        std::cout << "DAG has a cycle" << std::endl;
+        topological_ordering.clear();
+    }
+
+    return topological_ordering;
 }
 
 std::string Graph::get_dot()
@@ -193,7 +297,7 @@ std::string Graph::get_dot()
     std::string str("");
     std::stringstream dot_code(str);
 
-    if(is_directed())
+    if(get_directed())
     {
         dot_code << "digraph G {\n";
     }

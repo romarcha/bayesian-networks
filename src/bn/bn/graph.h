@@ -31,6 +31,8 @@ class Graph
 
         unsigned int get_number_of_nodes() const;
 
+        int get_index(Node* node_ptr);
+
         //!    
         /* Check if edge can be added according to the definition of this graph.
          The most trivial way is by checking if the introduction of the new edge introduces a cycle
@@ -47,9 +49,11 @@ class Graph
 
         unsigned int get_number_of_edges() const;
 
-        bool is_directed() const;
+        bool get_directed() const;
 
-        bool is_acyclic() const;
+        bool get_acyclic() const;
+
+        bool is_acyclic();
 
         std::vector<Node*> get_parents(std::string node_name);
 
@@ -58,6 +62,14 @@ class Graph
         std::vector<Node*> get_children(std::string node_name);
 
         std::vector<Node*> get_children(bn::Node &node_of_interest);
+
+        std::vector<Node*> get_leaf_nodes();
+
+        std::vector<Node*> topological_order();
+
+        //! Indegree is a function that returns a vector, where each element represents
+        //! the indegree of node with index i.
+        std::vector<int> indegree();
 
         std::vector<Node*> get_neighbourhood(bn::Node &node_of_interest);
 
