@@ -76,6 +76,8 @@ bool Graph::add_edge(unsigned int node_i, unsigned int node_j)
 
 bool Graph::add_edge(std::string node_name_i, std::string node_name_j)
 {
+
+
     return false;
 }
 
@@ -110,6 +112,80 @@ bool Graph::is_directed() const
 bool Graph::is_acyclic() const
 {
     return m_acyclic;
+}
+
+Node* Graph::get_node(std::string name)
+{
+    Node *node = NULL;
+    for(unsigned int node_idx = 0; node_idx < get_number_of_nodes(); node_idx++)
+    {
+        if(m_nodes[node_idx].get_name() == name)
+        {
+            node = &(m_nodes[node_idx]);
+            break;
+        }
+    }
+    return node;
+}
+
+std::vector<Node*> Graph::get_parents(std::string node_name)
+{
+    return get_parents(*get_node(node_name));
+}
+
+std::vector<Node*> Graph::get_parents(bn::Node &node_of_interest)
+{
+    if(m_verbose >= VERBOSE_DEBUG)
+    {
+        std::cout<<"Getting parents of "<<node_of_interest.get_name()<<":"<<std::endl;
+    }
+    std::vector<Node*> parents;
+    for(unsigned int edge_idx = 0; edge_idx < get_number_of_edges(); edge_idx++)
+    {
+        if(m_edges[edge_idx].m_child_node == &node_of_interest)
+        {
+            parents.push_back(m_edges[edge_idx].m_parent_node);
+            if(m_verbose >= VERBOSE_DEBUG)
+            {
+                std::cout<<m_edges[edge_idx].m_parent_node->get_name()<<std::endl;
+            }
+        }
+    }
+    if(m_verbose >= VERBOSE_DEBUG)
+    {
+        std::cout<<"--------------"<<std::endl;
+    }
+    return parents;
+}
+
+std::vector<Node*> Graph::get_children(std::string node_name)
+{
+    return get_children(*get_node(node_name));
+}
+
+std::vector<Node*> Graph::get_children(bn::Node &node_of_interest)
+{
+    if(m_verbose >= VERBOSE_DEBUG)
+    {
+        std::cout<<"Getting children of "<<node_of_interest.get_name()<<":"<<std::endl;
+    }
+    std::vector<Node*> children;
+    for(unsigned int edge_idx = 0; edge_idx < get_number_of_edges(); edge_idx++)
+    {
+        if(m_edges[edge_idx].m_parent_node == &node_of_interest)
+        {
+            children.push_back(m_edges[edge_idx].m_child_node);
+            if(m_verbose >= VERBOSE_DEBUG)
+            {
+                std::cout<<m_edges[edge_idx].m_child_node->get_name()<<std::endl;
+            }
+        }
+    }
+    if(m_verbose >= VERBOSE_DEBUG)
+    {
+        std::cout<<"--------------"<<std::endl;
+    }
+    return children;
 }
 
 std::string Graph::get_dot()

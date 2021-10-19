@@ -27,6 +27,8 @@ class Graph
 
         bool add_node(std::string node_name);
 
+        Node* get_node(std::string name);
+
         unsigned int get_number_of_nodes() const;
 
         //!    
@@ -38,7 +40,9 @@ class Graph
          This function will report success or failure and will also report error of failure
          (e.g. which cycles become present) */
         bool add_edge(unsigned int node_index_i, unsigned int node_index_j);
+
         bool add_edge(std::string node_name_i, std::string node_name_j);
+        
         bool add_edge(bn::Node &node_i, bn::Node &node_j);
 
         unsigned int get_number_of_edges() const;
@@ -47,7 +51,15 @@ class Graph
 
         bool is_acyclic() const;
 
+        std::vector<Node*> get_parents(std::string node_name);
 
+        std::vector<Node*> get_parents(bn::Node &node_of_interest);
+
+        std::vector<Node*> get_children(std::string node_name);
+
+        std::vector<Node*> get_children(bn::Node &node_of_interest);
+
+        std::vector<Node*> get_neighbourhood(bn::Node &node_of_interest);
 
         std::string get_dot();
 
