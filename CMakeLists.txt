@@ -31,6 +31,8 @@ endmacro()
 
 # Library Names
 LIBNAME("bn" LIB_BN)
+LIBNAME("utils" LIB_UTILS)
 
 add_subdirectory(src/bn/bn)
+add_subdirectory(src/bn/utils)
 add_subdirectory(src/bn/examples)

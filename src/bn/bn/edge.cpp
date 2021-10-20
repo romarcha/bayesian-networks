@@ -5,9 +5,9 @@
 namespace bn
 {
 
-Edge::Edge(Node &parent_node, Node &child_node)
-    :m_parent_node(&parent_node)
-    ,m_child_node(&child_node)
+Edge::Edge(Node *parent_node, Node *child_node)
+    :m_parent_node(parent_node)
+    ,m_child_node(child_node)
 {
 
 }

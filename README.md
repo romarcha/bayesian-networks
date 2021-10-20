@@ -46,8 +46,9 @@ At the moment we need help with the following tasks:
 - [x] Implement function for detecting cycles.
 - [x] Implement function that finds topological order.
 - [x] Check for cycles in the graphs when adding edges (only if acyclic).
-- [ ] Check if edge exists before adding a new edge.
-- [ ] Create graph from csv adjacency matrix
+- [x] Check if edge exists before adding a new edge.
+- [x] Create graph from csv adjacency matrix, or edge list in csv.
+    - [x] When adding an edge using node names, create nodes if they don't exist.
 - [ ] Check when you add a node that there is not existent node with the same name.
 - [ ] Implement functions for reachable nodes and d-separation.
 - [ ] Add parameters to edges.
@@ -68,3 +69,4 @@ At the moment we need help with the following tasks:
     - [ ] Add good nodes and good edges.
     - [ ] Add repeated edges or nodes.
     - [ ] Test all above for directed and undirected graphs.
+- [ ] Conduct diagnostic tool to map running time of algorithms with specific datasets.

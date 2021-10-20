@@ -11,7 +11,7 @@ class Node;
 class Edge
 {
     public:
-        Edge(Node &parent_node, Node &child_node);
+        Edge(Node* parent_node, Node* child_node);
 
     public:
         Node* m_parent_node;

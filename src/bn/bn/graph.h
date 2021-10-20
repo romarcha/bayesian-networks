@@ -25,6 +25,8 @@ class Graph
     public:
         Graph(unsigned int n_nodes, bool directed=true, bool acyclic = true, bool fully_connected=false, VerboseLevel verbose=VERBOSE_DEBUG);
 
+        bool populate_from_csv(std::string path);
+
         bool add_node(std::string node_name);
 
         Node* get_node(std::string name);
@@ -45,7 +47,7 @@ class Graph
 
         bool add_edge(std::string node_name_i, std::string node_name_j);
         
-        bool add_edge(bn::Node &node_i, bn::Node &node_j);
+        bool add_edge(bn::Node *node_parent, bn::Node *node_child);
 
         unsigned int get_number_of_edges() const;
 
@@ -57,11 +59,11 @@ class Graph
 
         std::vector<Node*> get_parents(std::string node_name);
 
-        std::vector<Node*> get_parents(bn::Node &node_of_interest);
+        std::vector<Node*> get_parents(bn::Node *node_of_interest);
 
         std::vector<Node*> get_children(std::string node_name);
 
-        std::vector<Node*> get_children(bn::Node &node_of_interest);
+        std::vector<Node*> get_children(bn::Node *node_of_interest);
 
         std::vector<Node*> get_leaf_nodes();
 
@@ -78,8 +80,8 @@ class Graph
         bool draw(std::string output_path, std::string filename);
 
     protected:
-        std::vector<Node> m_nodes;
-        std::vector<Edge> m_edges;
+        std::vector<Node *> m_nodes;
+        std::vector<Edge *> m_edges;
 
         bool m_directed;
 
