@@ -43,11 +43,11 @@ class Graph
          to this graph, and then, if cycles are found remove the edge.
          This function will report success or failure and will also report error of failure
          (e.g. which cycles become present) */
-        bool add_edge(unsigned int node_index_i, unsigned int node_index_j);
+        bool add_edge(unsigned int node_index_i, unsigned int node_index_j, double width = 1.0);
 
-        bool add_edge(std::string node_name_i, std::string node_name_j);
+        bool add_edge(std::string node_name_i, std::string node_name_j, double width = 1.0);
         
-        bool add_edge(bn::Node *node_parent, bn::Node *node_child);
+        bool add_edge(bn::Node *node_parent, bn::Node *node_child, double width = 1.0);
 
         unsigned int get_number_of_edges() const;
 

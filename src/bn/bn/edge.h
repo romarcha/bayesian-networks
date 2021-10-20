@@ -11,11 +11,13 @@ class Node;
 class Edge
 {
     public:
-        Edge(Node* parent_node, Node* child_node);
+        Edge(Node* parent_node, Node* child_node, double width = 1.0);
 
     public:
         Node* m_parent_node;
         Node* m_child_node;
+
+        double m_width;
 };
 
 }

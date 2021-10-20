@@ -67,7 +67,7 @@ bool Graph::populate_from_csv(std::string path)
         }
         else
         {
-            add_edge(std::string(row[0]),std::string(row[1]));
+            add_edge(std::string(row[0]),std::string(row[1]),std::stod(row[2]));
             std::cout << row[0] << "->" << row[1] << std::endl;
         }
         row_idx++;
@@ -83,6 +83,16 @@ bool Graph::add_node(std::string node_name)
     {
         std::cout<<"Adding node."<<std::endl;
     }
+    //Check if node exists before adding it.
+    for(unsigned int i = 0; i < get_number_of_nodes(); i++)
+    {
+        if(m_nodes[i]->get_name() == node_name)
+        {
+            std::cout<<"Node "<< node_name <<" cannot be added, because it already exists."<<std::endl;    
+            return success;
+        }
+    }
+
     m_nodes.push_back(new Node(node_name));
     success = true;
     if(m_verbose >= VERBOSE_DEBUG)
@@ -111,15 +121,15 @@ int Graph::get_index(Node* node_ptr)
     return index;
 }
 
-bool Graph::add_edge(unsigned int node_i, unsigned int node_j)
+bool Graph::add_edge(unsigned int node_i, unsigned int node_j, double width)
 {
     Node *parent_node = m_nodes[node_i];
     Node *child_node = m_nodes[node_j];
     
-    return add_edge(parent_node,child_node);
+    return add_edge(parent_node,child_node, width);
 }
 
-bool Graph::add_edge(std::string node_name_i, std::string node_name_j)
+bool Graph::add_edge(std::string node_name_i, std::string node_name_j, double width)
 {
     Node *node_i = get_node(node_name_i);
     Node *node_j = get_node(node_name_j);
@@ -142,10 +152,10 @@ bool Graph::add_edge(std::string node_name_i, std::string node_name_j)
         node_j = get_node(node_name_j);
     }
 
-    return add_edge(node_i, node_j);
+    return add_edge(node_i, node_j, width);
 }
 
-bool Graph::add_edge(bn::Node *node_parent, bn::Node *node_child)
+bool Graph::add_edge(bn::Node *node_parent, bn::Node *node_child, double width)
 {
     bool success = false;
     if(m_verbose >= VERBOSE_DEBUG)
@@ -170,7 +180,7 @@ bool Graph::add_edge(bn::Node *node_parent, bn::Node *node_child)
         }
     }
 
-    m_edges.push_back(new bn::Edge(node_parent,node_child));
+    m_edges.push_back(new bn::Edge(node_parent,node_child,width));
     success = true;
 
     //! If this graph is supposed to be acyclic, but the introduction of this edge made it non acyclic.
@@ -401,6 +411,21 @@ std::string Graph::get_dot()
         }
         
         dot_code << m_edges[j]->m_child_node->get_name();
+        
+        //Insert formatting options for edge
+        dot_code << "[penwidth = "<<std::abs(m_edges[j]->m_width);
+        /*
+        if(m_edges[j]->m_width > 0)
+        {
+            dot_code << " color = green";
+        }
+        else if (m_edges[j]->m_width < 0)
+        {
+            dot_code << " color = red";
+        }*/
+
+        dot_code <<"]";
+
         dot_code << ";\n";
     }
 

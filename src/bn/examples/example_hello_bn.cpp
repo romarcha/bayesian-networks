@@ -1,7 +1,6 @@
 // "Hello Bayesian Network!" example program
 
 #include <bn/bn/graph.h>
-#include <graphviz/gvc.h>
 #include <iostream>
 
 int main()
@@ -14,6 +13,7 @@ int main()
     bool fully_connected = false;
     bn::VerboseLevel verbose_level = bn::VERBOSE_DEBUG;
     bn::Graph graph(n_nodes, directed, acyclic, fully_connected, verbose_level);
+    graph.add_node("A");
     graph.add_node("A");
     graph.add_node("B");
     graph.add_node("C");

@@ -49,7 +49,10 @@ At the moment we need help with the following tasks:
 - [x] Check if edge exists before adding a new edge.
 - [x] Create graph from csv adjacency matrix, or edge list in csv.
     - [x] When adding an edge using node names, create nodes if they don't exist.
-- [ ] Check when you add a node that there is not existent node with the same name.
+    - [x] Graph is created and edges have a width, which is read from the csv file.
+    - [ ] Define color based on edge value.
+    - [ ] Define transparency based on uncertainty.
+- [x] Check when you add a node that there is not existent node with the same name.
 - [ ] Implement functions for reachable nodes and d-separation.
 - [ ] Add parameters to edges.
 - [ ] Assign variable types to nodes (categorical, binary or continuous).
