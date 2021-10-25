@@ -13,6 +13,15 @@ automatically finds dependencies and links the libraries and executables.
 
 CMake, Eigen, GCC,
 
+Ubuntu
+
+```bash
+sudo apt install cmake
+sudo apt install libeigen3-dev
+sudo apt install graphviz-dev
+```
+
+
 MacOS
 
 ```bash
@@ -23,7 +32,7 @@ brew install eigen
 
 ## Compilation
 
-MacOS
+MacOS or Ubuntu
 
 ```bash
 mkdir build
