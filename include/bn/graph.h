@@ -2,8 +2,8 @@
 #define __BN_GRAPH_H__
 
 #include <vector>
-#include <bn/bn/node.h>
-#include <bn/bn/edge.h>
+#include <bn/node.h>
+#include <bn/edge.h>
 
 namespace bn
 {
@@ -31,6 +31,8 @@ class Graph
 
         Node* get_node(std::string name);
 
+        Node* get_node(unsigned int index);
+
         unsigned int get_number_of_nodes() const;
 
         int get_index(Node* node_ptr);
@@ -48,6 +50,8 @@ class Graph
         bool add_edge(std::string node_name_i, std::string node_name_j, double width = 1.0);
         
         bool add_edge(bn::Node *node_parent, bn::Node *node_child, double width = 1.0);
+
+        Edge* get_edge(unsigned int index);
 
         unsigned int get_number_of_edges() const;
 
@@ -76,8 +80,6 @@ class Graph
         std::vector<Node*> get_neighbourhood(bn::Node &node_of_interest);
 
         std::string get_dot();
-
-        bool draw(std::string output_path, std::string filename);
 
     protected:
         std::vector<Node *> m_nodes;

@@ -1,6 +1,7 @@
 // "Hello Bayesian Network!" example program
 
-#include <bn/bn/graph.h>
+#include <bn/graph.h>
+#include <bn/graph_renderer_graphviz.h>
 #include <iostream>
 
 int main()
@@ -35,7 +36,10 @@ int main()
     graph.add_edge("D","A");
     graph.add_edge("D","A");
     graph.add_edge("E","D");
-    graph.draw("./","hello_bn");
+
+    bn::GraphRendererGraphviz renderer;
+    renderer.draw(&graph, "./","hello_bn");
+
     auto order = graph.topological_order();
     if(graph.is_acyclic())
     {

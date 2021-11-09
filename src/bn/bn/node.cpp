@@ -1,4 +1,4 @@
-#include <bn/bn/node.h>
+#include <bn/node.h>
 #include <iostream>
 
 namespace bn

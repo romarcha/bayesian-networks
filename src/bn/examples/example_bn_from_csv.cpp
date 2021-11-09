@@ -1,6 +1,7 @@
 // Example program for reading CSV file into bayesian network
 
-#include <bn/bn/graph.h>
+#include <bn/graph.h>
+#include <bn/graph_renderer_graphviz.h>
 #include <iostream>
 
 int main()
@@ -15,7 +16,9 @@ int main()
     bn::Graph graph(n_nodes, directed, acyclic, fully_connected, verbose_level);
     graph.populate_from_csv("../../src/bn/examples/example_graph.csv");
 
-    graph.draw("./","bn_from_csv");
+    bn::GraphRendererGraphviz renderer;
+    renderer.draw(&graph, "./","bn_from_csv");
+    //graph.draw("./","bn_from_csv");
     auto order = graph.topological_order();
     if(graph.is_acyclic())
     {

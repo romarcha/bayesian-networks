@@ -1,5 +1,5 @@
-#include <bn/bn/edge.h>
-#include <bn/bn/node.h>
+#include <bn/edge.h>
+#include <bn/node.h>
 #include <iostream>
 
 namespace bn

@@ -1,13 +1,10 @@
-#include <bn/bn/graph.h>
-#include <bn/utils/csv_reader.h>
+#include <bn/graph.h>
+#include <utils/csv_reader.h>
 #include <iostream>
 #include <sstream>
 #include <fstream>
-#include <graphviz/gvc.h>
-#include <graphviz/cgraph.h>
 #include <algorithm>
 #include <queue>
-
 
 
 namespace bn
@@ -198,6 +195,11 @@ bool Graph::add_edge(bn::Node *node_parent, bn::Node *node_child, double width)
     return success;
 }
 
+Edge* Graph::get_edge(unsigned int index)
+{
+    return m_edges[index];
+}
+
 unsigned int Graph::get_number_of_edges() const
 {
     return m_edges.size();
@@ -233,6 +235,11 @@ Node* Graph::get_node(std::string name)
         }
     }
     return node;
+}
+
+Node* Graph::get_node(unsigned int index)
+{
+    return m_nodes[index];
 }
 
 std::vector<Node*> Graph::get_parents(std::string node_name)
@@ -372,107 +379,6 @@ std::vector<Node*> Graph::topological_order()
     }
 
     return topological_ordering;
-}
-
-std::string Graph::get_dot()
-{
-    std::string str("");
-    std::stringstream dot_code(str);
-
-    if(get_directed())
-    {
-        dot_code << "digraph G {\n";
-    }
-    else
-    {
-        dot_code << "graph G {\n";
-    }
-
-    //Write nodes
-    for(unsigned int i = 0; i < this->get_number_of_nodes(); i++)
-    {
-        dot_code << "";
-        dot_code << m_nodes[i]->get_name();
-        dot_code << ";\n";
-    }
-
-    //Write edges
-    for(unsigned int j = 0; j < this->get_number_of_edges(); j++)
-    {
-        dot_code << "";
-        dot_code << m_edges[j]->m_parent_node->get_name();
-        if(get_directed())
-        {
-            dot_code << "->";
-        }
-        else
-        {
-            dot_code << "-";
-        }
-        
-        dot_code << m_edges[j]->m_child_node->get_name();
-        
-        //Insert formatting options for edge
-        dot_code << "[penwidth = "<<std::abs(m_edges[j]->m_width);
-        /*
-        if(m_edges[j]->m_width > 0)
-        {
-            dot_code << " color = green";
-        }
-        else if (m_edges[j]->m_width < 0)
-        {
-            dot_code << " color = red";
-        }*/
-
-        dot_code <<"]";
-
-        dot_code << ";\n";
-    }
-
-    dot_code << "}";
-
-    return dot_code.str();
-}
-
-bool Graph::draw(std::string output_path, std::string filename)
-{
-    //! Frist we'll generate the .dot code corresponding to the graph.
-    std::string dot_code = this->get_dot();
-    std::string output_dot_filename = output_path+filename+".dot";
-    std::ofstream out(output_dot_filename);
-    out << dot_code;
-    out.close();
-
-    std::string o_arg = std::string("-o") + output_path + filename + ".pdf";
-    char* args[] = {const_cast<char*>("dot"), const_cast<char*>("-Tpdf"),
-    const_cast<char*>(output_dot_filename.c_str()), 
-    const_cast<char*>(o_arg.c_str()) };
-
-    const int argc = sizeof(args)/sizeof(args[0]);
-    Agraph_t *g, *prev = NULL;
-    GVC_t* gvc;
-    
-    gvc = gvContext();
-    gvParseArgs(gvc, argc, args);
-
-    while ((g = gvNextInputGraph(gvc)))
-    {
-        if (prev)
-        {
-            gvFreeLayout(gvc, prev);
-            agclose(prev);
-        }
-            gvLayoutJobs(gvc, g);
-            gvRenderJobs(gvc, g);
-            prev = g;
-    }
-    if(m_verbose >= VERBOSE_DEBUG)
-    {
-        std::cout<<dot_code<<std::endl;
-    }
-    
-
-    return !gvFreeContext(gvc);
 }
 
 }
