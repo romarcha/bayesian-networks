@@ -23,11 +23,24 @@ std::string GraphRenderer::get_dot(bn::Graph *graph)
         dot_code << "graph G {\n";
     }
 
+    // Get ancestors of BMI
+    std::vector<Node*> ancestors = graph->get_ancestors("\"BMI\"");
+
     //Write nodes
     for(unsigned int i = 0; i < graph->get_number_of_nodes(); i++)
     {
         dot_code << "";
         dot_code << graph->get_node(i)->get_name();
+        if(graph->get_node(i)->get_name() == "\"BMI\"")
+        {
+            dot_code << " [style = filled, shape = diamond, color = \"#FE610030\"";
+            dot_code <<"]";
+        }
+        if(std::find(ancestors.begin(), ancestors.end(), graph->get_node(i)) != ancestors.end())
+        {
+            dot_code << " [style = filled, color = \"#FE610060\"";
+            dot_code <<"]";            
+        }
         dot_code << ";\n";
     }
 
@@ -48,16 +61,39 @@ std::string GraphRenderer::get_dot(bn::Graph *graph)
         dot_code << graph->get_edge(j)->m_child_node->get_name();
         
         //Insert formatting options for edge
-        dot_code << "[penwidth = "<<std::abs(graph->get_edge(j)->m_width);
-        /*
-        if(m_edges[j]->m_width > 0)
+        double width = 0;
+        if (std::abs(graph->get_edge(j)->m_width) > 2)
         {
-            dot_code << " color = green";
+            width = 2;
         }
-        else if (m_edges[j]->m_width < 0)
+        else if (std::abs(graph->get_edge(j)->m_width) < 1)
         {
-            dot_code << " color = red";
-        }*/
+            width = 1;
+        }
+        else
+        {
+            width = std::abs(graph->get_edge(j)->m_width);
+        }
+
+        dot_code << "[penwidth = "<< width;
+        
+        if(graph->get_edge(j)->m_width > 0)
+        {
+            dot_code << ", arrowhead = open";
+        }
+        else if (graph->get_edge(j)->m_width < 0)
+        {
+            dot_code << ", arrowhead = tee";
+        }
+
+        if(graph->get_edge(j)->m_width > 0)
+        {
+            dot_code << ", color = \"#648FFF\"";
+        }
+        else if (graph->get_edge(j)->m_width < 0)
+        {
+            dot_code << ", color = \"#FE6100\"";
+        }
 
         dot_code <<"]";
 
