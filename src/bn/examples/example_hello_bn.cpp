@@ -37,6 +37,15 @@ int main()
     graph.add_edge("D","A");
     graph.add_edge("E","D");
 
+    std::cout<<"Testing Ancestors Function, finding ancestors of E"<<std::endl;
+    auto ancestors = graph.get_ancestors("B");
+    for(bn::Node* node : ancestors)
+    {
+        std::cout<<node->get_name();
+    }
+    std::cout<<std::endl;
+    std::cout<<"Finishing ancestors test."<<std::endl;
+
     bn::GraphRendererGraphviz renderer;
     renderer.draw(&graph, "./","hello_bn");
 

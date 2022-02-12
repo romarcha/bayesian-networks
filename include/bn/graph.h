@@ -61,6 +61,10 @@ class Graph
 
         bool is_acyclic();
 
+        std::vector<Node*> get_ancestors(std::string node_name);
+
+        std::vector<Node*> get_ancestors(bn::Node *node_of_interest);
+
         std::vector<Node*> get_parents(std::string node_name);
 
         std::vector<Node*> get_parents(bn::Node *node_of_interest);

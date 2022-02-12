@@ -242,6 +242,45 @@ Node* Graph::get_node(unsigned int index)
     return m_nodes[index];
 }
 
+std::vector<Node*> Graph::get_ancestors(std::string node_name)
+{
+    return get_ancestors(get_node(node_name));
+}
+
+std::vector<Node*> Graph::get_ancestors(bn::Node *node_of_interest)
+{
+    std::vector<Node*> ancestors;
+
+    //First add all parents of node of interest to ancestors.
+    //Get the parents
+    std::vector<Node*> parents = get_parents(node_of_interest);
+
+    //Concatenate parents vector into ancestors
+    ancestors.insert(
+        ancestors.end(),
+        std::make_move_iterator(parents.begin()),
+        std::make_move_iterator(parents.end())
+    );
+
+    for(Node* parent : parents)
+    {
+        //Get the ancestors for each parent
+        std::vector<Node*> parent_ancestors = get_ancestors(parent);
+        ancestors.insert(
+            ancestors.end(),
+            std::make_move_iterator(parent_ancestors.begin()),
+            std::make_move_iterator(parent_ancestors.end())    
+        );
+    }
+
+    //The vector ancestors probably contains many duplicates at this points
+    //we'll remove the duplicates.
+    sort(ancestors.begin(), ancestors.end());
+    ancestors.erase(unique(ancestors.begin(), ancestors.end()), ancestors.end());
+
+    return ancestors;
+}
+
 std::vector<Node*> Graph::get_parents(std::string node_name)
 {
     return get_parents(get_node(node_name));
