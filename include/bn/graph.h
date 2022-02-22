@@ -52,8 +52,18 @@ class Graph
         bool add_edge(bn::Node *node_parent, bn::Node *node_child, double width = 1.0);
 
         Edge* get_edge(unsigned int index);
-
+        
         unsigned int get_number_of_edges() const;
+
+        bool add_blacklist(unsigned int node_index_i, unsigned int node_index_j, double width = 1.0);
+
+        bool add_blacklist(std::string node_name_i, std::string node_name_j, double width = 1.0);
+        
+        bool add_blacklist(bn::Node *node_parent, bn::Node *node_child, double width = 1.0);
+
+        Edge* get_blacklist_element(unsigned int index);
+
+        unsigned int get_number_of_blacklisted_edges() const;
 
         bool get_directed() const;
 
@@ -88,6 +98,9 @@ class Graph
     protected:
         std::vector<Node *> m_nodes;
         std::vector<Edge *> m_edges;
+
+        //! Vector of blacklisted edges
+        std::vector<Edge *> m_blacklist_edges;
 
         bool m_directed;
 

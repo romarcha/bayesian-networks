@@ -62,6 +62,10 @@ At the moment we need help with the following tasks:
     - [ ] Define color based on edge value.
     - [ ] Define transparency based on uncertainty.
 - [x] Check when you add a node that there is not existent node with the same name.
+- [ ] Finding CPDAG | Max PDAG - Theory | V-structure | Immoralities
+- [ ] Plotting CPDAG.
+- [ ] Add a list of blacklisted edges.
+- [ ] Plotting a blacklist.
 - [ ] Implement functions for reachable nodes and d-separation.
 - [ ] Add parameters to edges.
 - [ ] Assign variable types to nodes (categorical, binary or continuous).

@@ -177,6 +177,16 @@ bool Graph::add_edge(bn::Node *node_parent, bn::Node *node_child, double width)
         }
     }
 
+    //First check if the edge is NOT
+    for(unsigned int edge_idx = 0; edge_idx < get_number_of_blacklisted_edges(); edge_idx++)
+    {
+        if(m_blacklist_edges[edge_idx]->m_parent_node == node_parent && m_blacklist_edges[edge_idx]->m_child_node == node_child)
+        {
+            std::cout<<"Error: edge between "<<node_parent->get_name()<<" and "<<node_child->get_name()<<" is blacklisted."<<std::endl;
+            return false;
+        }
+    }
+
     m_edges.push_back(new bn::Edge(node_parent,node_child,width));
     success = true;
 
@@ -203,6 +213,86 @@ Edge* Graph::get_edge(unsigned int index)
 unsigned int Graph::get_number_of_edges() const
 {
     return m_edges.size();
+}
+
+bool Graph::add_blacklist(unsigned int node_index_i, unsigned int node_index_j, double width)
+{
+    Node *parent_node = m_nodes[node_index_i];
+    Node *child_node = m_nodes[node_index_j];
+    
+    return add_blacklist(parent_node,child_node, width);
+}
+
+bool Graph::add_blacklist(std::string node_name_i, std::string node_name_j, double width)
+{
+    Node *node_i = get_node(node_name_i);
+    Node *node_j = get_node(node_name_j);
+
+    //If an edge is created with a non existing node, then the node is created.
+    bool reload_ptrs = false;
+    if(node_i == NULL)
+    {
+        add_node(node_name_i);
+        reload_ptrs = true;
+    }
+    if(node_j == NULL)
+    {
+        add_node(node_name_j);
+        reload_ptrs = true;
+    }
+    if(reload_ptrs)
+    {
+        node_i = get_node(node_name_i);
+        node_j = get_node(node_name_j);
+    }
+
+    return add_blacklist(node_i, node_j, width);
+}
+        
+bool Graph::add_blacklist(bn::Node *node_parent, bn::Node *node_child, double width)
+{
+    bool success = false;
+    if(m_verbose >= VERBOSE_DEBUG)
+    {
+        if(get_directed())
+        {
+            std::cout<<"Adding blacklisted edge "<<node_parent->get_name()<<" -> "<<node_child->get_name()<<std::endl;
+        }
+        else
+        {
+            std::cout<<"Adding blacklisted edge"<<node_parent->get_name()<<" - "<<node_child->get_name()<<std::endl;
+        }
+    }
+
+    //First check if the edge already exists
+    for(unsigned int edge_idx = 0; edge_idx < get_number_of_blacklisted_edges(); edge_idx++)
+    {
+        if(m_blacklist_edges[edge_idx]->m_parent_node == node_parent && m_blacklist_edges[edge_idx]->m_child_node == node_child)
+        {
+            std::cout<<"Error: edge between "<<node_parent->get_name()<<" and "<<node_child->get_name()<<" already exists."<<std::endl;
+            return false;
+        }
+    }
+
+
+    m_blacklist_edges.push_back(new bn::Edge(node_parent,node_child,width));
+    success = true;
+    
+    if(m_verbose >= VERBOSE_DEBUG)
+    {
+        std::cout<<"New number of edges is "<<m_blacklist_edges.size()<<"."<<std::endl;
+    }
+    return success;
+}
+
+Edge* Graph::get_blacklist_element(unsigned int index)
+{
+    return m_blacklist_edges[index];
+}
+
+unsigned int Graph::get_number_of_blacklisted_edges() const
+{
+    return m_blacklist_edges.size();
 }
 
 bool Graph::get_directed() const
@@ -386,7 +476,7 @@ std::vector<Node*> Graph::topological_order()
             queue.push(m_nodes[node_idx]);
         }
     }
-
+    
     while(queue.size()>0)
     {
 

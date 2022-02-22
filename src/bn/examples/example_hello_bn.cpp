@@ -23,6 +23,10 @@ int main()
     graph.add_node("F");
     graph.add_node("G");
     graph.add_node("H");
+
+    //Create blacklist
+    graph.add_blacklist("D","B");
+
     graph.add_edge("A","B");
     graph.add_edge("D","B");
     graph.add_edge("C","B");
