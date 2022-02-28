@@ -46,7 +46,7 @@ make
 
 ## Collaboration
 
-To discuss collaboration contact Roman Marchant roman.marchant@sydney.edu.au.
+To discuss collaboration contact Roman Marchant roman.marchant@csiro.au.
 At the moment we need help with the following tasks:
 
 ### TODO
