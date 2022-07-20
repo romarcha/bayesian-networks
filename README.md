@@ -21,13 +21,17 @@ sudo apt install libeigen3-dev
 sudo apt install graphviz-dev
 ```
 
-
 MacOS
 
 ```bash
 brew install cmake
 brew install graphviz
 brew install eigen
+```
+
+Windows
+
+```bash
 ```
 
 ## Compilation
@@ -61,16 +65,20 @@ At the moment we need help with the following tasks:
     - [x] Graph is created and edges have a width, which is read from the csv file.
     - [ ] Define color based on edge value.
     - [ ] Define transparency based on uncertainty.
+- [ ] Obtaining CPDAG
+- [ ] Plotting Cyclic BN
 - [x] Check when you add a node that there is not existent node with the same name.
 - [ ] Implement functions for reachable nodes and d-separation.
 - [ ] Add parameters to edges.
 - [ ] Assign variable types to nodes (categorical, binary or continuous).
+- [ ] CPT/CPD
 - [ ] Evaluate Conditional Independence.
 - [ ] Generate data from graph.
 - [ ] Likelihood calculation from data.
 - [ ] Parameter estimation
 - [ ] Structure learning
     - [ ] Random search
+    - [ ] PC Algorithm (frequentist)
     - [ ] Order MCMC
     - [ ] Partition MCMC
 
